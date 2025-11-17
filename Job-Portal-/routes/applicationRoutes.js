@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 
-const {applyToJob} = require('../controllers/applicationController');
+const {applyToJob ,getMyApplications} = require('../controllers/applicationController');
 const {verifyToken,allowUser} = require('../middleware/authMiddleware.js')
 
 router.post(
@@ -10,5 +10,9 @@ router.post(
     allowUser('jobseeker'),
     applyToJob
 );
+router.get('/my-applications', verifyToken, getMyApplications);
+
+
+//ek or Route add karna hoga jo User ki id sa fetch hoga or existing application dikheage 
 
 module.exports = router;

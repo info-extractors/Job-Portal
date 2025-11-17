@@ -12,9 +12,11 @@ const Jobs = () => {
     fetchJobs();
   }, []);
 
+  
+
   const fetchJobs = async () => {
     try {
-      const response = await jobAPI.getAll();
+      const response = await jobAPI.getAllJobs();
       setJobs(response.data);
     } catch (err) {
       setError('Failed to fetch jobs');

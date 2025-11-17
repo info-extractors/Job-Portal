@@ -10,22 +10,23 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+
 // Auth API
 export const authAPI = {
-  login: (data) => API.post('http://localhost:5000/api/auth/login', data),
-  register: (data) => API.post('http://localhost:5000/api/auth/register', data),
+  login: (data) => API.post('http://localhost:3000/api/auth/login', data),
+  register: (data) => API.post('http://localhost:3000/api/auth/register', data),
 };
 
 // Job API
 export const jobAPI = {
-  getAllJobs: () => API.get('http://localhost:5000/api/jobs'),
-  getJobById: (id) => API.get(`http://localhost:5000/api/jobs/${id}`),
-  createJob: (data) => API.post('http://localhost:5000/api/jobs', data),
+  getAllJobs: () => API.get('http://localhost:3000/api/jobs/getJob'),
+  getJobById: (id) => API.get(`http://localhost:3000/api/jobs/job/${id}`),
+  createJob: (data) => API.post('http://localhost:3000/api/jobs/createJob', data),
 };
 
 // Application API
 export const applicationAPI = {
-  applyToJob: (data) => API.post('http://localhost:5000/api/application/apply', data),
+  applyToJob: (id,data) => API.post(`http://localhost:3000/api/application/apply/${id}`, data),
   getMyApplications: () =>
-    API.get('http://localhost:5000/api/application/my-applications'),
+    API.get('http://localhost:3000/api/application/my-applications'),
 };

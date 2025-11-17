@@ -1,5 +1,5 @@
 const Job = require('../models/Job');
-
+const mongoose = require('mongoose');
 
 const getAllJobs = async(req,res) => {
     try{
@@ -33,4 +33,28 @@ const createJob = async(req,res) => {
 }
 
 
-module.exports = {getAllJobs,createJob};
+const getJobById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Validate ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ msg: "Invalid Job ID" });
+        }
+
+        const job = await Job.findById(id);
+
+        if (!job) {
+            return res.status(404).json({ msg: "Job not found" });
+        }
+
+        res.status(200).json(job);
+
+    } catch (error) {
+        console.error("Server Error:", error);
+        res.status(500).json({ msg: "Server Error" });
+    }
+};
+
+
+module.exports = {getAllJobs,createJob ,getJobById};

@@ -37,7 +37,7 @@ const CreateJob = () => {
     setError('');
 
     try {
-      await jobAPI.create({
+      await jobAPI.createJob({
         ...formData,
         salary: formData.salary ? parseInt(formData.salary) : undefined
       });

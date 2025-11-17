@@ -27,7 +27,7 @@ const JobDetails = () => {
 
   const fetchJob = async () => {
     try {
-      const response = await jobAPI.getById(id);
+      const response = await jobAPI.getJobById(id);
       setJob(response.data);
     } catch (err) {
       setError('Job not found');
@@ -53,7 +53,7 @@ const JobDetails = () => {
     setApplyError('');
 
     try {
-      await applicationAPI.apply(id, applicationData);
+      await applicationAPI.applyToJob(id, applicationData);
       setApplySuccess('Application submitted successfully!');
       setShowApplyForm(false);
       setApplicationData({ coverLetter: '', resume: '' });
