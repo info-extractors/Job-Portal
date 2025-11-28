@@ -65,4 +65,56 @@ const getMyApplications = async (req, res) => {
     }
 };
 
-module.exports = {applyToJob , getMyApplications};
+const getApplicationsByJobId = async (req, res) => {
+    try {
+        const { jobId } = req.params;
+
+        const applications = await Application.find({ Job: jobId })
+            .populate("User", "name email")  // populate user info
+            .populate("Job", "title company"); // populate job info
+
+        if (!applications || applications.length === 0) {
+            return res.status(404).json({ message: "No applications found for this job" });
+        }
+
+        res.json({
+            count: applications.length,
+            applications
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+const updateApplicationStatus = async (req, res) => {
+    try {
+        const { jobId } = req.params;
+        const { userId, status } = req.body;
+
+        if (!['pending','reviewed','accepted','rejected'].includes(status)) {
+            return res.status(400).json({ error: "Invalid status" });
+        }
+
+        const application = await Application.findOne({ Job: jobId, User: userId });
+        
+        if (!application) {
+            return res.status(404).json({ error: "Application not found" });
+        }
+
+        application.status = status;
+        await application.save();
+
+        return res.json({
+            message: "Application status updated successfully",
+            application
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+module.exports = {applyToJob , getMyApplications ,getApplicationsByJobId ,updateApplicationStatus };

@@ -56,5 +56,26 @@ const getJobById = async (req, res) => {
     }
 };
 
+const getJobsByUser = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-module.exports = {getAllJobs,createJob ,getJobById};
+        const jobs = await Job.find({ createdBy: id });
+
+        if (!jobs || jobs.length === 0) {
+            return res.status(404).json({ message: "No jobs found for this user" });
+        }
+
+        res.json({
+            count: jobs.length,
+            jobs
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+
+module.exports = {getAllJobs,createJob ,getJobById ,getJobsByUser};
